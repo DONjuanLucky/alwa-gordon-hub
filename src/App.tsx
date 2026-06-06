@@ -23,7 +23,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetClose, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
@@ -417,9 +417,11 @@ function Header({ activePage, onNavigate }: { activePage: PageId; onNavigate: (p
             <SheetTitle className="text-left text-xl font-black uppercase tracking-[0.16em]">Alwa Gordon</SheetTitle>
             <div className="flex flex-col gap-2">
               {navItems.map(item => (
-                <Button key={item.id} variant="ghost" className="justify-start" onClick={() => onNavigate(item.id)}>
-                  {item.label}
-                </Button>
+                <SheetClose key={item.id} asChild>
+                  <Button variant="ghost" className="justify-start" onClick={() => onNavigate(item.id)}>
+                    {item.label}
+                  </Button>
+                </SheetClose>
               ))}
             </div>
           </SheetContent>
