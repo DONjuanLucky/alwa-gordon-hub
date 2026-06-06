@@ -308,18 +308,27 @@ const pagePaths: Record<PageId, string> = {
 
 const pathPages = Object.fromEntries(Object.entries(pagePaths).map(([key, value]) => [value, key])) as Record<string, PageId>;
 const assetPath = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\//, "")}`;
+const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
+const pageUrl = (page: PageId) => `${basePath}${pagePaths[page] === "/" ? "/" : pagePaths[page]}`;
+const currentPageFromLocation = () => {
+  const basePrefix = basePath && basePath !== "." ? basePath : "";
+  const strippedPath = basePrefix && window.location.pathname.startsWith(basePrefix)
+    ? window.location.pathname.slice(basePrefix.length) || "/"
+    : window.location.pathname;
+  return pathPages[strippedPath] || "home";
+};
 
 function App() {
-  const [activePage, setActivePage] = useState<PageId>(() => pathPages[window.location.pathname] || "home");
+  const [activePage, setActivePage] = useState<PageId>(() => currentPageFromLocation());
   const page = useMemo(() => pageTitles[activePage], [activePage]);
   const navigate = (nextPage: PageId) => {
     setActivePage(nextPage);
-    window.history.pushState({}, "", pagePaths[nextPage]);
+    window.history.pushState({}, "", pageUrl(nextPage));
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   useEffect(() => {
-    const onPopState = () => setActivePage(pathPages[window.location.pathname] || "home");
+    const onPopState = () => setActivePage(currentPageFromLocation());
     window.addEventListener("popstate", onPopState);
     return () => window.removeEventListener("popstate", onPopState);
   }, []);
