@@ -307,6 +307,7 @@ const pagePaths: Record<PageId, string> = {
 };
 
 const pathPages = Object.fromEntries(Object.entries(pagePaths).map(([key, value]) => [value, key])) as Record<string, PageId>;
+const assetPath = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\//, "")}`;
 
 function App() {
   const [activePage, setActivePage] = useState<PageId>(() => pathPages[window.location.pathname] || "home");
@@ -423,7 +424,7 @@ function HomePage({ onNavigate }: { onNavigate: (page: PageId) => void }) {
   return (
     <>
       <section className="home-hero relative min-h-[calc(100vh-65px)] overflow-hidden xl:pl-14">
-        <img className="home-hero-image" src="/alwa/alwa-nexties-lookout.jpg" alt="Alwa Gordon portrait" />
+        <img className="home-hero-image" src={assetPath("/alwa/alwa-nexties-lookout.jpg")} alt="Alwa Gordon portrait" />
         <div className="absolute inset-0 bg-[linear-gradient(90deg,#080808_0%,rgba(8,8,8,0.94)_34%,rgba(8,8,8,0.5)_62%,rgba(8,8,8,0.2)_100%)]" />
         <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#080808] to-transparent" />
         <div className="relative mx-auto grid min-h-[calc(100vh-65px)] max-w-7xl content-center gap-10 px-4 py-16 sm:px-6 lg:px-8">
@@ -454,7 +455,7 @@ function HomePage({ onNavigate }: { onNavigate: (page: PageId) => void }) {
           <div className="hero-release-strip">
             {releases.slice(0, 4).map(release => (
               <a key={release.title} className="hero-release" href={release.url} target="_blank" rel="noreferrer">
-                <img src={release.image} alt={`${release.title} cover`} />
+                <img src={assetPath(release.image)} alt={`${release.title} cover`} />
                 <span>{release.title}</span>
               </a>
             ))}
@@ -481,7 +482,7 @@ function FeaturedGrid() {
       <div className="music-wall mb-14">
         {releases.map(release => (
           <a key={release.title} className="music-tile" href={release.url} target="_blank" rel="noreferrer">
-            <img src={release.image} alt={`${release.title} cover art`} />
+            <img src={assetPath(release.image)} alt={`${release.title} cover art`} />
             <span className="music-tile-title">{release.title}</span>
             <span className="music-tile-meta">{release.type}</span>
           </a>
@@ -490,7 +491,7 @@ function FeaturedGrid() {
       <div className="grid gap-5 lg:grid-cols-[1.05fr_0.95fr]">
         <Card className="overflow-hidden border-white/10 bg-white/[0.035] text-stone-100">
           <a className="video-poster" href="https://youtu.be/DR2rIs6E4t0" target="_blank" rel="noreferrer">
-            <img src="/alwa/leave-video-thumb.jpg" alt="LEAVE video thumbnail" />
+            <img src={assetPath("/alwa/leave-video-thumb.jpg")} alt="LEAVE video thumbnail" />
             <span className="video-play">
               <Play />
             </span>
@@ -502,7 +503,7 @@ function FeaturedGrid() {
         </Card>
         <div className="grid gap-5">
           <Card className="overflow-hidden border-white/10 bg-white/[0.035] text-stone-100">
-            <img className="h-72 w-full object-cover" src="/alwa/alwa-goodtimes-loving-yourself.jpg" alt="Alwa Gordon Good Times profile image" />
+            <img className="h-72 w-full object-cover" src={assetPath("/alwa/alwa-goodtimes-loving-yourself.jpg")} alt="Alwa Gordon Good Times profile image" />
             <CardHeader>
               <CardTitle>From Santa Cruz</CardTitle>
               <CardDescription className="text-stone-400">
@@ -529,7 +530,7 @@ function BioPage() {
     <PageShell eyebrow="Artist Biography" title="Santa Cruz raised the sound. Alwa carries it forward.">
       <div className="grid gap-8 lg:grid-cols-[0.85fr_1.15fr]">
         <div className="flex flex-col gap-5">
-          <img className="rounded-md border border-white/10 object-cover" src="/alwa/alwa-goodtimes-2019.jpg" alt="Alwa Gordon in Good Times Love Your Local Band photo" />
+          <img className="rounded-md border border-white/10 object-cover" src={assetPath("/alwa/alwa-goodtimes-2019.jpg")} alt="Alwa Gordon in Good Times Love Your Local Band photo" />
           <SourceCard />
         </div>
         <div className="flex flex-col gap-6 text-lg leading-8 text-stone-300">
@@ -575,7 +576,7 @@ function MusicPage() {
         {releases.map(release => (
           <Card key={release.title} className="group overflow-hidden border-white/10 bg-white/[0.035] text-stone-100">
             <a href={release.url} target="_blank" rel="noreferrer">
-              <img className="aspect-square w-full object-cover transition duration-500 group-hover:scale-105" src={release.image} alt={`${release.title} cover art`} />
+              <img className="aspect-square w-full object-cover transition duration-500 group-hover:scale-105" src={assetPath(release.image)} alt={`${release.title} cover art`} />
             </a>
             <CardHeader>
               <div className="flex items-center justify-between gap-2">
@@ -669,7 +670,7 @@ function ShowsPage() {
       <div className="grid items-start gap-5 lg:grid-cols-2">
         {showItems.map(show => (
           <Card key={show.title} className="overflow-hidden border-white/10 bg-white/[0.035] text-stone-100">
-            {show.image && <img className="h-80 w-full object-cover" src={show.image} alt={`${show.title} flyer`} />}
+            {show.image && <img className="h-80 w-full object-cover" src={assetPath(show.image)} alt={`${show.title} flyer`} />}
             <CardHeader className="grid gap-3">
               <div>
                 <div className="mb-3 flex flex-wrap gap-2">
@@ -709,7 +710,7 @@ function PressPage() {
       <div className="grid gap-5 lg:grid-cols-3">
         {pressItems.map(item => (
           <Card key={item.title} className="overflow-hidden border-white/10 bg-white/[0.035] text-stone-100">
-            <img className="h-56 w-full object-cover" src={item.image} alt={`${item.outlet} image for ${item.title}`} />
+            <img className="h-56 w-full object-cover" src={assetPath(item.image)} alt={`${item.outlet} image for ${item.title}`} />
             <CardHeader>
               <div className="flex items-center justify-between gap-2">
                 <Badge variant="secondary">{item.outlet}</Badge>
@@ -858,7 +859,7 @@ function ReleaseDeepDive({ release }: { release: Release }) {
     <Card className="border-white/10 bg-white/[0.035] text-stone-100">
       <CardHeader>
         <div className="flex items-start gap-4">
-          <img className="size-20 rounded-md object-cover" src={release.image} alt={`${release.title} cover`} />
+          <img className="size-20 rounded-md object-cover" src={assetPath(release.image)} alt={`${release.title} cover`} />
           <div>
             <CardTitle>{release.title}</CardTitle>
             <CardDescription className="mt-2 text-stone-400">{release.credits}</CardDescription>
@@ -927,7 +928,7 @@ function Footer({ currentPage, onNavigate }: { currentPage: string; onNavigate: 
         <div>
           <div className="mb-4 flex items-center gap-3">
             <Avatar size="lg">
-              <AvatarImage src="/alwa/alwa-nexties-lookout.jpg" alt="Alwa Gordon" />
+              <AvatarImage src={assetPath("/alwa/alwa-nexties-lookout.jpg")} alt="Alwa Gordon" />
               <AvatarFallback>AG</AvatarFallback>
             </Avatar>
             <div>
