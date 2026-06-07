@@ -337,7 +337,6 @@ function App() {
     <TooltipProvider>
       <div className="min-h-screen bg-[#080808] text-stone-100">
         <div className="site-noise" />
-        <SideRail />
         <Header activePage={activePage} onNavigate={navigate} />
         <main>
           {activePage === "home" && <HomePage onNavigate={navigate} />}
@@ -355,33 +354,18 @@ function App() {
   );
 }
 
-function SideRail() {
-  return (
-    <aside className="fixed left-0 top-0 z-30 hidden h-screen w-14 border-r border-white/10 bg-black/80 xl:flex xl:flex-col xl:items-center xl:justify-between xl:py-6">
-      <div className="h-10 w-px bg-red-400/70" />
-      <div className="[writing-mode:vertical-rl] rotate-180 text-[0.65rem] font-black uppercase tracking-[0.5em] text-stone-400">
-        eighty eight over everything
-      </div>
-      <div className="text-xl font-black text-red-400">88</div>
-    </aside>
-  );
-}
-
 function Header({ activePage, onNavigate }: { activePage: PageId; onNavigate: (page: PageId) => void }) {
+  const leftNav = navItems.filter(item => ["home", "music", "label", "videos", "shows"].includes(item.id));
+  const rightNav = navItems.filter(item => ["press", "bio", "sitemap"].includes(item.id));
+
   return (
-    <header className="sticky top-0 z-40 border-b border-white/10 bg-black/82 backdrop-blur-xl">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
-        <button className="brand-lockup" onClick={() => onNavigate("home")} type="button">
-          <span className="text-left">
-            <span className="block text-sm font-black uppercase tracking-[0.26em] text-stone-100">Alwa Gordon</span>
-            <span className="block text-[0.62rem] font-bold uppercase tracking-[0.28em] text-red-300">88 Over Everything</span>
-          </span>
-        </button>
-        <nav className="hidden items-center gap-1 lg:flex" aria-label="Primary navigation">
-          {navItems.map(item => (
+    <header className="site-header">
+      <div className="site-header-grid">
+        <nav className="hidden items-center gap-5 lg:flex" aria-label="Primary navigation">
+          {leftNav.map(item => (
             <button
               key={item.id}
-              className={`nav-word ${activePage === item.id ? "is-active" : ""}`}
+              className={`gaga-nav-word ${activePage === item.id ? "is-active" : ""}`}
               onClick={() => onNavigate(item.id)}
               type="button"
             >
@@ -389,23 +373,36 @@ function Header({ activePage, onNavigate }: { activePage: PageId; onNavigate: (p
             </button>
           ))}
         </nav>
-        <div className="hidden items-center gap-2 sm:flex">
-          <Button asChild variant="outline" size="sm" className="uppercase tracking-[0.18em]">
+        <button className="artist-logo" onClick={() => onNavigate("home")} type="button" aria-label="Alwa Gordon home">
+          ALWA
+        </button>
+        <nav className="hidden items-center justify-end gap-5 lg:flex" aria-label="Secondary navigation">
+          {rightNav.map(item => (
+            <button
+              key={item.id}
+              className={`gaga-nav-word ${activePage === item.id ? "is-active" : ""}`}
+              onClick={() => onNavigate(item.id)}
+              type="button"
+            >
+              {item.label}
+            </button>
+          ))}
+          <Button asChild variant="outline" size="sm" className="header-action">
             <a href="https://alwagordon.bandcamp.com/music" target="_blank" rel="noreferrer">
               <Headphones data-icon="inline-start" />
               Listen
             </a>
           </Button>
-          <Button asChild size="sm" className="uppercase tracking-[0.18em]">
+          <Button asChild variant="ghost" size="sm" className="header-action">
             <a href="https://www.youtube.com/results?search_query=Alwa+Gordon" target="_blank" rel="noreferrer">
               <Youtube data-icon="inline-start" />
               YouTube
             </a>
           </Button>
-        </div>
+        </nav>
         <Sheet>
           <SheetTrigger asChild>
-            <Button className="lg:hidden" variant="outline" size="icon">
+            <Button className="mobile-menu-button lg:hidden" variant="outline" size="icon">
               <Menu />
               <span className="sr-only">Open navigation</span>
             </Button>
@@ -431,62 +428,71 @@ function Header({ activePage, onNavigate }: { activePage: PageId; onNavigate: (p
 function HomePage({ onNavigate }: { onNavigate: (page: PageId) => void }) {
   return (
     <>
-      <section className="era-hero relative min-h-[calc(100vh-65px)] overflow-hidden xl:pl-14">
-        <img className="era-hero-photo" src={assetPath("/alwa/alwa-nexties-lookout.jpg")} alt="Alwa Gordon portrait" />
-        <div className="era-hero-shade" />
-        <div className="relative mx-auto grid min-h-[calc(100vh-65px)] max-w-7xl content-center gap-9 px-4 py-16 sm:px-6 lg:px-8">
-          <div className="max-w-5xl">
-            <p className="era-kicker">The latest era from Alwa Gordon</p>
-            <h1 className="era-title">
-              <span>Text Me</span>
-              <span>If You Can</span>
-            </h1>
-            <div className="era-meta">
-              <span>Santa Cruz, CA</span>
-              <span>88 Over Everything</span>
-              <span>Album out now</span>
-            </div>
-            <div className="mt-7 flex flex-wrap gap-3">
-              <Button size="lg" asChild>
-                <a href="https://alwagordon.bandcamp.com/album/text-me-if-you-can" target="_blank" rel="noreferrer">
-                  <Disc3 data-icon="inline-start" />
-                  Listen now
-                </a>
-              </Button>
-              <Button variant="outline" size="lg" onClick={() => onNavigate("videos")}>
-                <Play data-icon="inline-start" />
-                Watch video
-              </Button>
-            </div>
-          </div>
-          <div className="era-panel-row">
-            <EraPanel label="Music" copy="Albums and singles" image="/alwa/text-me-if-you-can.jpg" onClick={() => onNavigate("music")} />
-            <EraPanel label="Projects" copy="Official visuals" image="/alwa/leave-video-thumb.jpg" onClick={() => onNavigate("videos")} />
-            <EraPanel label="Live" copy="Shows and booking" image="/alwa/moes-saritah-alwa-event.jpg" onClick={() => onNavigate("shows")} />
-            <EraPanel label="Press" copy="News and features" image="/alwa/alwa-goodtimes-loving-yourself.jpg" onClick={() => onNavigate("press")} />
-            <EraPanel label="88OE" copy="The movement" image="/alwa/10-seconds-left.jpg" onClick={() => onNavigate("label")} />
+      <section className="mayhem-hero">
+        <div className="hero-motion-stack" aria-hidden="true">
+          <img className="hero-motion-image hero-motion-image-a" src={assetPath("/alwa/alwa-nexties-lookout.jpg")} alt="" />
+          <img className="hero-motion-image hero-motion-image-b" src={assetPath("/alwa/text-me-if-you-can.jpg")} alt="" />
+          <img className="hero-motion-image hero-motion-image-c" src={assetPath("/alwa/leave-video-thumb.jpg")} alt="" />
+          <div className="hero-red-wash" />
+          <div className="hero-vhs-lines" />
+          <div className="hero-dust" />
+        </div>
+        <div className="hero-centerpiece">
+          <p>A year of</p>
+          <h1>
+            <span>88</span>
+          </h1>
+          <strong>Alwa Gordon</strong>
+          <div className="hero-action-row">
+            <Button asChild>
+              <a href="https://alwagordon.bandcamp.com/album/text-me-if-you-can" target="_blank" rel="noreferrer">
+                <Disc3 data-icon="inline-start" />
+                TEXT ME IF YOU CAN
+              </a>
+            </Button>
+            <Button variant="outline" onClick={() => onNavigate("videos")}>
+              <Play data-icon="inline-start" />
+              Watch LEAVE
+            </Button>
           </div>
         </div>
+        <HeroThumbRail onNavigate={onNavigate} />
       </section>
       <FeaturedGrid onNavigate={onNavigate} />
     </>
   );
 }
 
-function EraPanel({ label, copy, image, onClick }: { label: string; copy: string; image: string; onClick: () => void }) {
+function HeroThumbRail({ onNavigate }: { onNavigate: (page: PageId) => void }) {
+  const moments = [
+    { label: "Latest", image: "/alwa/text-me-if-you-can.jpg", page: "music" as PageId },
+    { label: "LEAVE", image: "/alwa/leave-video-thumb.jpg", page: "videos" as PageId },
+    { label: "Live", image: "/alwa/moes-saritah-alwa-event.jpg", page: "shows" as PageId },
+    { label: "NEXTies", image: "/alwa/alwa-nexties-lookout.jpg", page: "press" as PageId },
+    { label: "10 Seconds", image: "/alwa/10-seconds-left.jpg", page: "music" as PageId },
+    { label: "Good Times", image: "/alwa/alwa-goodtimes-2019.jpg", page: "bio" as PageId },
+    { label: "88OE", image: "/alwa/details.jpg", page: "label" as PageId }
+  ];
+
   return (
-    <button className="era-panel" onClick={onClick} type="button">
-      <img src={assetPath(image)} alt={`${label} feature`} />
-      <span className="era-panel-title">{label}</span>
-      <span className="era-panel-copy">{copy}</span>
-      <ArrowUpRight className="era-panel-arrow" />
-    </button>
+    <div className="hero-thumb-rail" aria-label="Featured sections">
+      {moments.map(moment => (
+        <button key={moment.label} className="hero-thumb" onClick={() => onNavigate(moment.page)} type="button">
+          <img src={assetPath(moment.image)} alt={`${moment.label} feature`} />
+          <span>{moment.label}</span>
+        </button>
+      ))}
+    </div>
   );
 }
 
 function FeaturedGrid({ onNavigate }: { onNavigate: (page: PageId) => void }) {
   return (
-    <section className="artist-home xl:pl-14">
+    <section className="artist-home">
+      <div className="year-section">
+        <p>A year of</p>
+        <h2>Alwa Gordon</h2>
+      </div>
       <div className="feature-band feature-band-album">
         <div className="feature-copy">
           <p>New release</p>
