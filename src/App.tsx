@@ -462,30 +462,10 @@ function HomePage({ onNavigate }: { onNavigate: (page: PageId) => void }) {
 function FeaturedGrid({ onNavigate }: { onNavigate: (page: PageId) => void }) {
   return (
     <section className="artist-home">
-      <div className="brand-mark-section">
-        <img src={assetPath(brandImages.logo)} alt="Alwa Gordon Music logo" />
-        <div>
-          <p>Alwa Gordon Music</p>
-          <h2>Records, visuals, shows, and 88 Over Everything.</h2>
-        </div>
-      </div>
-
-      <div className="artist-photo-grid">
-        <button className="artist-photo-card tall" onClick={() => onNavigate("bio")} type="button">
-          <img src={assetPath(brandImages.portrait)} alt="Alwa Gordon seated portrait" />
-          <span>Artist</span>
-          <strong>Santa Cruz voice. Independent catalog. 88 on the back.</strong>
-        </button>
-        <button className="artist-photo-card" onClick={() => onNavigate("music")} type="button">
-          <img src={assetPath(brandImages.overhead)} alt="Alwa Gordon overhead portrait" />
-          <span>Music</span>
-          <strong>TEXT ME IF YOU CAN and the projects around it.</strong>
-        </button>
-        <button className="artist-photo-card" onClick={() => onNavigate("press")} type="button">
-          <img src={assetPath(brandImages.sideProfile)} alt="Alwa Gordon side profile portrait" />
-          <span>Press</span>
-          <strong>The city, the coverage, the movement.</strong>
-        </button>
+      <div className="artist-atmosphere" aria-hidden="true">
+        <img className="atmosphere-shot atmosphere-shot-a" src={assetPath(brandImages.portrait)} alt="" />
+        <img className="atmosphere-shot atmosphere-shot-b" src={assetPath(brandImages.overhead)} alt="" />
+        <img className="atmosphere-shot atmosphere-shot-c" src={assetPath(brandImages.sideProfile)} alt="" />
       </div>
 
       <div className="feature-band feature-band-album">
