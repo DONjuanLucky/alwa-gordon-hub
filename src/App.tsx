@@ -1,4 +1,6 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
   ArrowUpRight,
   CalendarDays,
@@ -27,6 +29,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 type PageId = "home" | "bio" | "music" | "videos" | "shows" | "press" | "label" | "sitemap";
+
+gsap.registerPlugin(ScrollTrigger);
 
 type NavItem = {
   id: PageId;
@@ -318,6 +322,10 @@ const pathPages = Object.fromEntries(Object.entries(pagePaths).map(([key, value]
 const assetPath = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\//, "")}`;
 const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
 const pageUrl = (page: PageId) => `${basePath}${pagePaths[page] === "/" ? "/" : pagePaths[page]}`;
+const clearScrollExperience = () => {
+  ScrollTrigger.getAll().forEach(trigger => trigger.kill(true));
+  gsap.globalTimeline.clear();
+};
 const currentPageFromLocation = () => {
   const basePrefix = basePath && basePath !== "." ? basePath : "";
   const strippedPath = basePrefix && window.location.pathname.startsWith(basePrefix)
@@ -329,21 +337,29 @@ const currentPageFromLocation = () => {
 function App() {
   const [activePage, setActivePage] = useState<PageId>(() => currentPageFromLocation());
   const page = useMemo(() => pageTitles[activePage], [activePage]);
+  const appRootRef = useRef<HTMLDivElement>(null);
   const navigate = (nextPage: PageId) => {
+    clearScrollExperience();
+    window.scrollTo({ top: 0, behavior: "instant" });
     setActivePage(nextPage);
     window.history.pushState({}, "", pageUrl(nextPage));
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: "instant" }));
   };
 
   useEffect(() => {
-    const onPopState = () => setActivePage(currentPageFromLocation());
+    const onPopState = () => {
+      clearScrollExperience();
+      setActivePage(currentPageFromLocation());
+    };
     window.addEventListener("popstate", onPopState);
     return () => window.removeEventListener("popstate", onPopState);
   }, []);
 
+  useScrollExperience(appRootRef, activePage);
+
   return (
     <TooltipProvider>
-      <div className="min-h-screen bg-[#080808] text-stone-100">
+      <div ref={appRootRef} className="min-h-screen bg-[#080808] text-stone-100">
         <div className="site-noise" />
         <Header activePage={activePage} onNavigate={navigate} />
         <main>
@@ -360,6 +376,155 @@ function App() {
       </div>
     </TooltipProvider>
   );
+}
+
+function useScrollExperience(rootRef: React.RefObject<HTMLDivElement | null>, activePage: PageId) {
+  useLayoutEffect(() => {
+    const root = rootRef.current;
+    if (!root || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return;
+    }
+
+    const mm = gsap.matchMedia();
+    const context = gsap.context(() => {
+
+      mm.add("(min-width: 761px)", () => {
+        const heroTimeline = gsap.timeline({
+          scrollTrigger: {
+            trigger: ".brand-hero",
+            start: "top top",
+            end: "+=92%",
+            scrub: 0.8,
+            pin: true,
+            anticipatePin: 1
+          }
+        });
+
+        heroTimeline
+          .to(".brand-hero-image", { scale: 1.12, filter: "saturate(1.22) contrast(1.08)", ease: "none" }, 0)
+          .to(".brand-hero-actions", { y: -52, opacity: 0, ease: "none" }, 0)
+          .fromTo(".artist-atmosphere", { opacity: 0 }, { opacity: 1, ease: "none" }, 0.28);
+      });
+
+      mm.add("(max-width: 760px)", () => {
+        gsap.to(".brand-hero-image", {
+          scale: 1.09,
+          yPercent: -4,
+          ease: "none",
+          scrollTrigger: {
+            trigger: ".brand-hero",
+            start: "top top",
+            end: "bottom top",
+            scrub: 0.7
+          }
+        });
+      });
+
+      gsap.utils.toArray<HTMLElement>(".feature-band").forEach((section, index) => {
+        const copy = section.querySelector(".feature-copy");
+        const media = section.querySelector("img, .wide-video");
+
+        gsap.fromTo(
+          copy,
+          { autoAlpha: 0, x: index % 2 === 0 ? -72 : 72 },
+          {
+            autoAlpha: 1,
+            x: 0,
+            duration: 1,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: section,
+              start: "top 74%",
+              end: "center 48%",
+              scrub: 0.8
+            }
+          }
+        );
+
+        gsap.fromTo(
+          media,
+          { autoAlpha: 0.52, scale: 1.16, xPercent: index % 2 === 0 ? 8 : -8 },
+          {
+            autoAlpha: 1,
+            scale: 1,
+            xPercent: 0,
+            ease: "none",
+            scrollTrigger: {
+              trigger: section,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 1
+            }
+          }
+        );
+      });
+
+      gsap.utils.toArray<HTMLElement>(".release-marquee, .editorial-grid, .page-shell, .timeline-list, .track-grid, [data-slot='card'], .platform-link").forEach(element => {
+        gsap.fromTo(
+          element,
+          { autoAlpha: 0, y: 54, scale: 0.985 },
+          {
+            autoAlpha: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.85,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: element,
+              start: "top 86%",
+              end: "top 58%",
+              scrub: 0.7
+            }
+          }
+        );
+      });
+
+      gsap.utils.toArray<HTMLElement>(".release-cover, .editorial-card").forEach((card, index) => {
+        gsap.fromTo(
+          card,
+          { yPercent: index % 2 === 0 ? 10 : -8 },
+          {
+            yPercent: 0,
+            ease: "none",
+            scrollTrigger: {
+              trigger: card,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 0.8
+            }
+          }
+        );
+      });
+
+      gsap.utils.toArray<HTMLElement>(".page-shell [data-slot='card'], .page-shell .platform-link, .page-shell .timeline-row, .page-shell .track-row").forEach((item, index) => {
+        gsap.fromTo(
+          item,
+          { autoAlpha: 0, y: 28, rotateX: 4 },
+          {
+            autoAlpha: 1,
+            y: 0,
+            rotateX: 0,
+            duration: 0.7,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: item,
+              start: "top 90%",
+              toggleActions: "play none none reverse"
+            },
+            delay: Math.min((index % 6) * 0.035, 0.18)
+          }
+        );
+      });
+
+      ScrollTrigger.refresh();
+
+    }, root);
+
+    return () => {
+      mm.revert();
+      context.revert();
+    };
+  }, [rootRef, activePage]);
 }
 
 function Header({ activePage, onNavigate }: { activePage: PageId; onNavigate: (page: PageId) => void }) {
@@ -811,7 +976,7 @@ function SitemapPage() {
 
 function PageShell({ eyebrow, title, children }: { eyebrow: string; title: string; children: React.ReactNode }) {
   return (
-    <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 xl:pl-20">
+    <section className="page-shell mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 xl:pl-20">
       <div className="mb-10 max-w-4xl">
         <div className="mb-4 flex items-center gap-3 text-sm font-bold uppercase tracking-[0.2em] text-red-300">
           <span className="h-px w-10 bg-red-400" />
