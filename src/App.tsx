@@ -84,13 +84,13 @@ type PlatformLink = {
 };
 
 const navItems: NavItem[] = [
-  { id: "home", label: "Home" },
-  { id: "bio", label: "Bio" },
+  { id: "home", label: "Latest" },
   { id: "music", label: "Music" },
-  { id: "videos", label: "Videos" },
-  { id: "shows", label: "Shows" },
+  { id: "videos", label: "Projects" },
+  { id: "shows", label: "Live" },
   { id: "press", label: "Press" },
   { id: "label", label: "88OE" },
+  { id: "bio", label: "Bio" },
   { id: "sitemap", label: "Sitemap" }
 ];
 
@@ -369,37 +369,34 @@ function SideRail() {
 
 function Header({ activePage, onNavigate }: { activePage: PageId; onNavigate: (page: PageId) => void }) {
   return (
-    <header className="sticky top-0 z-40 border-b border-white/10 bg-black/80 backdrop-blur-xl">
+    <header className="sticky top-0 z-40 border-b border-white/10 bg-black/82 backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
-        <button className="flex items-center gap-3" onClick={() => onNavigate("home")} type="button">
-          <span className="flex size-10 items-center justify-center rounded-md border border-red-400/30 bg-red-500/10 font-black text-red-200">
-            88
-          </span>
+        <button className="brand-lockup" onClick={() => onNavigate("home")} type="button">
           <span className="text-left">
-            <span className="block text-sm font-black uppercase tracking-[0.2em] text-stone-100">Alwa Gordon</span>
-            <span className="block text-xs text-stone-500">88 Over Everything</span>
+            <span className="block text-sm font-black uppercase tracking-[0.26em] text-stone-100">Alwa Gordon</span>
+            <span className="block text-[0.62rem] font-bold uppercase tracking-[0.28em] text-red-300">88 Over Everything</span>
           </span>
         </button>
         <nav className="hidden items-center gap-1 lg:flex" aria-label="Primary navigation">
           {navItems.map(item => (
-            <Button
+            <button
               key={item.id}
-              variant={activePage === item.id ? "secondary" : "ghost"}
-              size="sm"
+              className={`nav-word ${activePage === item.id ? "is-active" : ""}`}
               onClick={() => onNavigate(item.id)}
+              type="button"
             >
               {item.label}
-            </Button>
+            </button>
           ))}
         </nav>
         <div className="hidden items-center gap-2 sm:flex">
-          <Button asChild variant="outline" size="sm">
+          <Button asChild variant="outline" size="sm" className="uppercase tracking-[0.18em]">
             <a href="https://alwagordon.bandcamp.com/music" target="_blank" rel="noreferrer">
               <Headphones data-icon="inline-start" />
               Listen
             </a>
           </Button>
-          <Button asChild size="sm">
+          <Button asChild size="sm" className="uppercase tracking-[0.18em]">
             <a href="https://www.youtube.com/results?search_query=Alwa+Gordon" target="_blank" rel="noreferrer">
               <Youtube data-icon="inline-start" />
               YouTube
@@ -434,103 +431,120 @@ function Header({ activePage, onNavigate }: { activePage: PageId; onNavigate: (p
 function HomePage({ onNavigate }: { onNavigate: (page: PageId) => void }) {
   return (
     <>
-      <section className="home-hero relative min-h-[calc(100vh-65px)] overflow-hidden xl:pl-14">
-        <img className="home-hero-image" src={assetPath("/alwa/alwa-nexties-lookout.jpg")} alt="Alwa Gordon portrait" />
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,#080808_0%,rgba(8,8,8,0.94)_34%,rgba(8,8,8,0.5)_62%,rgba(8,8,8,0.2)_100%)]" />
-        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#080808] to-transparent" />
-        <div className="relative mx-auto grid min-h-[calc(100vh-65px)] max-w-7xl content-center gap-10 px-4 py-16 sm:px-6 lg:px-8">
-          <div className="max-w-4xl">
-            <div className="mb-5 flex flex-wrap items-center gap-3">
-              <span className="text-sm font-black uppercase tracking-[0.28em] text-red-300">Santa Cruz, California</span>
-              <span className="h-px w-12 bg-red-400/80" />
-              <span className="text-sm font-black uppercase tracking-[0.28em] text-stone-300">88 Over Everything</span>
-            </div>
-            <h1 className="font-black uppercase leading-[0.78] tracking-[-0.055em] text-stone-50">
-              <span className="block text-[clamp(5.2rem,15vw,14rem)]">Alwa</span>
-              <span className="block text-[clamp(4.8rem,14vw,12.8rem)] text-red-400">Gordon</span>
+      <section className="era-hero relative min-h-[calc(100vh-65px)] overflow-hidden xl:pl-14">
+        <img className="era-hero-photo" src={assetPath("/alwa/alwa-nexties-lookout.jpg")} alt="Alwa Gordon portrait" />
+        <div className="era-hero-shade" />
+        <div className="relative mx-auto grid min-h-[calc(100vh-65px)] max-w-7xl content-center gap-9 px-4 py-16 sm:px-6 lg:px-8">
+          <div className="max-w-5xl">
+            <p className="era-kicker">The latest era from Alwa Gordon</p>
+            <h1 className="era-title">
+              <span>Text Me</span>
+              <span>If You Can</span>
             </h1>
-            <p className="mt-7 max-w-2xl text-xl font-medium leading-8 text-stone-200">
-              Rap from the coast. Records with weight. A Santa Cruz artist building the 88OE world one release, video, and room at a time.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Button size="lg" onClick={() => onNavigate("music")}>
-                <Disc3 data-icon="inline-start" />
-                Play the catalog
+            <div className="era-meta">
+              <span>Santa Cruz, CA</span>
+              <span>88 Over Everything</span>
+              <span>Album out now</span>
+            </div>
+            <div className="mt-7 flex flex-wrap gap-3">
+              <Button size="lg" asChild>
+                <a href="https://alwagordon.bandcamp.com/album/text-me-if-you-can" target="_blank" rel="noreferrer">
+                  <Disc3 data-icon="inline-start" />
+                  Listen now
+                </a>
               </Button>
               <Button variant="outline" size="lg" onClick={() => onNavigate("videos")}>
                 <Play data-icon="inline-start" />
-                Watch visuals
+                Watch video
               </Button>
             </div>
           </div>
-          <div className="hero-release-strip">
-            {releases.slice(0, 4).map(release => (
-              <a key={release.title} className="hero-release" href={release.url} target="_blank" rel="noreferrer">
-                <img src={assetPath(release.image)} alt={`${release.title} cover`} />
-                <span>{release.title}</span>
-              </a>
-            ))}
+          <div className="era-panel-row">
+            <EraPanel label="Music" copy="Albums and singles" image="/alwa/text-me-if-you-can.jpg" onClick={() => onNavigate("music")} />
+            <EraPanel label="Projects" copy="Official visuals" image="/alwa/leave-video-thumb.jpg" onClick={() => onNavigate("videos")} />
+            <EraPanel label="Live" copy="Shows and booking" image="/alwa/moes-saritah-alwa-event.jpg" onClick={() => onNavigate("shows")} />
+            <EraPanel label="Press" copy="News and features" image="/alwa/alwa-goodtimes-loving-yourself.jpg" onClick={() => onNavigate("press")} />
+            <EraPanel label="88OE" copy="The movement" image="/alwa/10-seconds-left.jpg" onClick={() => onNavigate("label")} />
           </div>
         </div>
       </section>
-      <FeaturedGrid />
+      <FeaturedGrid onNavigate={onNavigate} />
     </>
   );
 }
 
-function FeaturedGrid() {
+function EraPanel({ label, copy, image, onClick }: { label: string; copy: string; image: string; onClick: () => void }) {
   return (
-    <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 xl:pl-20">
-      <div className="mb-10 grid gap-6 lg:grid-cols-[0.65fr_1fr] lg:items-end">
-        <div>
-          <div className="mb-3 text-sm font-black uppercase tracking-[0.28em] text-red-300">Start here</div>
-          <h2 className="text-4xl font-black uppercase leading-none tracking-[-0.04em] sm:text-6xl">Records first. Everything else follows.</h2>
+    <button className="era-panel" onClick={onClick} type="button">
+      <img src={assetPath(image)} alt={`${label} feature`} />
+      <span className="era-panel-title">{label}</span>
+      <span className="era-panel-copy">{copy}</span>
+      <ArrowUpRight className="era-panel-arrow" />
+    </button>
+  );
+}
+
+function FeaturedGrid({ onNavigate }: { onNavigate: (page: PageId) => void }) {
+  return (
+    <section className="artist-home xl:pl-14">
+      <div className="feature-band feature-band-album">
+        <div className="feature-copy">
+          <p>New release</p>
+          <h2>TEXT ME IF YOU CAN</h2>
+          <span>Seven songs through 88 Over Everything. Direct from Santa Cruz into the rotation.</span>
+          <div className="mt-7 flex flex-wrap gap-3">
+            <Button asChild>
+              <a href="https://alwagordon.bandcamp.com/album/text-me-if-you-can" target="_blank" rel="noreferrer">
+                Bandcamp <ArrowUpRight data-icon="inline-end" />
+              </a>
+            </Button>
+            <Button asChild variant="outline">
+              <a href="https://music.apple.com/us/album/text-me-if-you-can/1824897413" target="_blank" rel="noreferrer">
+                Apple Music <ArrowUpRight data-icon="inline-end" />
+              </a>
+            </Button>
+          </div>
         </div>
-        <p className="max-w-2xl text-lg leading-8 text-stone-300">
-          Projects, visuals, city coverage, show history, and 88OE in one place for the people already tapped in and the ones catching up.
-        </p>
+        <img src={assetPath("/alwa/text-me-if-you-can.jpg")} alt="TEXT ME IF YOU CAN cover art" />
       </div>
-      <div className="music-wall mb-14">
+
+      <div className="release-marquee">
         {releases.map(release => (
-          <a key={release.title} className="music-tile" href={release.url} target="_blank" rel="noreferrer">
+          <a key={release.title} className="release-cover" href={release.url} target="_blank" rel="noreferrer">
             <img src={assetPath(release.image)} alt={`${release.title} cover art`} />
-            <span className="music-tile-title">{release.title}</span>
-            <span className="music-tile-meta">{release.type}</span>
+            <span>{release.title}</span>
           </a>
         ))}
       </div>
-      <div className="grid gap-5 lg:grid-cols-[1.05fr_0.95fr]">
-        <Card className="overflow-hidden border-white/10 bg-white/[0.035] text-stone-100">
-          <a className="video-poster" href="https://youtu.be/DR2rIs6E4t0" target="_blank" rel="noreferrer">
-            <img src={assetPath("/alwa/leave-video-thumb.jpg")} alt="LEAVE video thumbnail" />
-            <span className="video-play">
-              <Play />
-            </span>
-          </a>
-          <CardHeader>
-            <CardTitle>LEAVE</CardTitle>
-            <CardDescription className="text-stone-400">A visual lane for the records, release drops, and 88OE footage.</CardDescription>
-          </CardHeader>
-        </Card>
-        <div className="grid gap-5">
-          <Card className="overflow-hidden border-white/10 bg-white/[0.035] text-stone-100">
-            <img className="h-72 w-full object-cover" src={assetPath("/alwa/alwa-goodtimes-loving-yourself.jpg")} alt="Alwa Gordon Good Times profile image" />
-            <CardHeader>
-              <CardTitle>From Santa Cruz</CardTitle>
-              <CardDescription className="text-stone-400">
-                Good Times and Lookout have both put ink on the story: the city, the records, and the 88 Over Everything movement.
-              </CardDescription>
-            </CardHeader>
-          </Card>
-          <Card className="border-red-400/20 bg-red-500/10 text-stone-100">
-            <CardHeader>
-              <CardTitle className="text-4xl font-black tracking-[-0.04em] text-red-300">88OE</CardTitle>
-              <CardDescription className="text-stone-300">
-                More than a tag. The label, the crew, the releases, the rooms, the visuals.
-              </CardDescription>
-            </CardHeader>
-          </Card>
+
+      <div className="feature-band feature-band-video">
+        <a className="wide-video" href="https://youtu.be/DR2rIs6E4t0" target="_blank" rel="noreferrer">
+          <img src={assetPath("/alwa/leave-video-thumb.jpg")} alt="LEAVE video thumbnail" />
+          <span className="video-play">
+            <Play />
+          </span>
+        </a>
+        <div className="feature-copy">
+          <p>Official visual</p>
+          <h2>LEAVE</h2>
+          <span>One strong video moment up front, with room for the channel to grow around official videos, lyric drops, and 88OE footage.</span>
+          <Button className="mt-7" variant="outline" onClick={() => onNavigate("videos")}>
+            More projects <ArrowUpRight data-icon="inline-end" />
+          </Button>
         </div>
+      </div>
+
+      <div className="editorial-grid">
+        <button className="editorial-card" onClick={() => onNavigate("shows")} type="button">
+          <img src={assetPath("/alwa/moes-saritah-alwa-event.jpg")} alt="Moe's Alley event flyer" />
+          <span>Live</span>
+          <strong>Moe&apos;s Alley and the rooms where the records breathe.</strong>
+        </button>
+        <button className="editorial-card" onClick={() => onNavigate("press")} type="button">
+          <img src={assetPath("/alwa/alwa-nexties-lookout.jpg")} alt="Alwa Gordon Lookout Santa Cruz portrait" />
+          <span>Press</span>
+          <strong>NEXTies Musician of the Year. Santa Cruz in the story.</strong>
+        </button>
       </div>
     </section>
   );
