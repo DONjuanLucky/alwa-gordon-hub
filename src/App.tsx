@@ -415,16 +415,34 @@ function Header({ activePage, onNavigate }: { activePage: PageId; onNavigate: (p
               <span className="sr-only">Open navigation</span>
             </Button>
           </SheetTrigger>
-          <SheetContent className="border-white/10 bg-black text-stone-100" side="right">
-            <SheetTitle className="text-left text-xl font-black uppercase tracking-[0.16em]">Alwa Gordon</SheetTitle>
-            <div className="flex flex-col gap-2">
+          <SheetContent className="mobile-drawer border-white/10 text-stone-100" side="right">
+            <SheetTitle className="drawer-title">
+              <span>Alwa Gordon</span>
+              <small>88 Over Everything</small>
+            </SheetTitle>
+            <div className="drawer-nav-list">
               {navItems.map(item => (
                 <SheetClose key={item.id} asChild>
-                  <Button variant="ghost" className="justify-start" onClick={() => onNavigate(item.id)}>
-                    {item.label}
-                  </Button>
+                  <button className={`drawer-nav-link ${activePage === item.id ? "is-active" : ""}`} onClick={() => onNavigate(item.id)} type="button">
+                    <span>{item.label}</span>
+                    <ArrowUpRight />
+                  </button>
                 </SheetClose>
               ))}
+            </div>
+            <div className="drawer-actions">
+              <Button asChild>
+                <a href="https://alwagordon.bandcamp.com/music" target="_blank" rel="noreferrer">
+                  <Headphones data-icon="inline-start" />
+                  Listen
+                </a>
+              </Button>
+              <Button asChild variant="outline">
+                <a href="https://www.youtube.com/results?search_query=Alwa+Gordon" target="_blank" rel="noreferrer">
+                  <Youtube data-icon="inline-start" />
+                  YouTube
+                </a>
+              </Button>
             </div>
           </SheetContent>
         </Sheet>

@@ -148,8 +148,15 @@ footer {
   position: fixed;
   inset: 0 0 auto;
   z-index: 50;
-  height: 4rem;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.78), rgba(0, 0, 0, 0));
+  height: 4.5rem;
+  border-bottom: 1px solid rgba(247, 201, 106, 0.14);
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.86), rgba(0, 0, 0, 0.28) 72%, rgba(0, 0, 0, 0)),
+    linear-gradient(90deg, rgba(247, 201, 106, 0.08), transparent 28%, transparent 72%, rgba(45, 80, 190, 0.12));
+  backdrop-filter: blur(14px);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.04) inset,
+    0 18px 70px rgba(0, 0, 0, 0.34);
 }
 
 .site-header-grid {
@@ -162,12 +169,13 @@ footer {
 
 .artist-logo {
   display: grid;
-  width: 8.5rem;
+  width: 9rem;
   place-items: center;
   border: 0;
   background: transparent;
   cursor: pointer;
   padding: 0;
+  transition: transform 180ms ease, filter 180ms ease;
 }
 
 .artist-logo img {
@@ -177,37 +185,206 @@ footer {
   outline: 0;
 }
 
+.artist-logo:hover {
+  transform: translateY(-1px) scale(1.04);
+  filter: drop-shadow(0 0 16px rgba(247, 201, 106, 0.38));
+}
+
 .gaga-nav-word {
+  position: relative;
+  isolation: isolate;
   min-height: 2rem;
-  border: 0;
+  overflow: hidden;
+  border: 1px solid transparent;
+  border-radius: 999px;
   background: transparent;
-  color: #f5f5f4;
+  color: rgba(250, 250, 249, 0.9);
   cursor: pointer;
-  font-size: 1rem;
-  font-weight: 600;
-  padding: 0 0.25rem;
-  transition: opacity 160ms ease, transform 160ms ease;
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  padding: 0.42rem 0.78rem;
+  text-transform: uppercase;
+  transition: color 180ms ease, border-color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+}
+
+.gaga-nav-word::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(110deg, transparent, rgba(247, 201, 106, 0.18), rgba(54, 84, 210, 0.16), transparent),
+    rgba(255, 255, 255, 0.025);
+  opacity: 0;
+  transform: translateX(-38%);
+  transition: opacity 220ms ease, transform 260ms ease;
+}
+
+.gaga-nav-word::after {
+  content: "";
+  position: absolute;
+  inset: auto 0.7rem 0.22rem;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #f7c96a, transparent);
+  opacity: 0;
+  transform: scaleX(0.35);
+  transition: opacity 180ms ease, transform 180ms ease;
 }
 
 .gaga-nav-word.is-active {
-  border: 1px solid rgba(255, 255, 255, 0.86);
-  border-radius: 0.18rem;
-  padding: 0.16rem 0.55rem;
+  border-color: rgba(247, 201, 106, 0.5);
+  color: #fff6d8;
+  box-shadow:
+    0 0 0 1px rgba(247, 201, 106, 0.08) inset,
+    0 0 22px rgba(247, 201, 106, 0.14);
 }
 
 .gaga-nav-word:hover {
-  opacity: 0.72;
-  transform: translateY(-1px);
+  border-color: rgba(247, 201, 106, 0.42);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+}
+
+.gaga-nav-word:hover::before,
+.gaga-nav-word.is-active::before {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.gaga-nav-word:hover::after,
+.gaga-nav-word.is-active::after {
+  opacity: 1;
+  transform: scaleX(1);
 }
 
 .header-action {
-  border-radius: 0.1rem;
-  text-transform: none;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  box-shadow: 0 0 22px rgba(45, 80, 190, 0.08);
 }
 
 .mobile-menu-button {
   grid-column: 3;
   justify-self: end;
+  border-color: rgba(247, 201, 106, 0.52) !important;
+  border-radius: 999px !important;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(247, 201, 106, 0.2), transparent 42%),
+    rgba(0, 0, 0, 0.28) !important;
+  color: #fff !important;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.06) inset,
+    0 0 24px rgba(247, 201, 106, 0.14);
+}
+
+.mobile-menu-button:hover {
+  transform: translateY(-1px) scale(1.04);
+  box-shadow:
+    0 0 0 1px rgba(247, 201, 106, 0.24) inset,
+    0 0 32px rgba(247, 201, 106, 0.24);
+}
+
+.mobile-drawer {
+  background:
+    linear-gradient(180deg, rgba(3, 3, 3, 0.94), rgba(5, 6, 14, 0.98)),
+    radial-gradient(circle at 20% 8%, rgba(247, 201, 106, 0.18), transparent 12rem),
+    radial-gradient(circle at 90% 36%, rgba(45, 80, 190, 0.2), transparent 16rem) !important;
+  backdrop-filter: blur(18px);
+}
+
+.drawer-title {
+  display: grid;
+  gap: 0.28rem;
+  margin: 0.45rem 0 1.25rem;
+  color: #fff;
+  font-size: 1.35rem;
+  font-weight: 950;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.drawer-title small {
+  color: #f7c96a;
+  font-size: 0.64rem;
+  letter-spacing: 0.24em;
+}
+
+.drawer-nav-list {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.drawer-nav-link {
+  position: relative;
+  display: flex;
+  min-height: 3.45rem;
+  align-items: center;
+  justify-content: space-between;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.35rem;
+  background:
+    linear-gradient(110deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)),
+    rgba(255, 255, 255, 0.025);
+  color: #fff;
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 950;
+  letter-spacing: 0.16em;
+  padding: 0 0.95rem;
+  text-transform: uppercase;
+  transition: transform 180ms ease, border-color 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
+}
+
+.drawer-nav-link::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(247, 201, 106, 0.2), rgba(45, 80, 190, 0.16), transparent);
+  opacity: 0;
+  transform: translateX(-32%);
+  transition: opacity 220ms ease, transform 260ms ease;
+}
+
+.drawer-nav-link span,
+.drawer-nav-link svg {
+  position: relative;
+  z-index: 1;
+}
+
+.drawer-nav-link svg {
+  color: #f7c96a;
+  opacity: 0.72;
+  transition: transform 180ms ease, opacity 180ms ease;
+}
+
+.drawer-nav-link:hover,
+.drawer-nav-link.is-active {
+  border-color: rgba(247, 201, 106, 0.44);
+  transform: translateX(-3px);
+  box-shadow: 0 18px 46px rgba(0, 0, 0, 0.28);
+}
+
+.drawer-nav-link:hover::before,
+.drawer-nav-link.is-active::before {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.drawer-nav-link:hover svg,
+.drawer-nav-link.is-active svg {
+  opacity: 1;
+  transform: translate(2px, -2px);
+}
+
+.drawer-actions {
+  display: grid;
+  gap: 0.7rem;
+  margin-top: 1.2rem;
 }
 
 .brand-hero {
