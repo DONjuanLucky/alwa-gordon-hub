@@ -397,14 +397,48 @@ footer {
   color: #fff;
 }
 
+.brand-hero::before {
+  content: "";
+  position: absolute;
+  inset: -12%;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(255, 226, 149, 0.74) 0 0.12rem, transparent 0.42rem),
+    radial-gradient(circle at 30% 8%, rgba(179, 215, 255, 0.48) 0 0.1rem, transparent 0.36rem),
+    radial-gradient(circle at 50% 28%, rgba(255, 231, 165, 0.54) 0 0.16rem, transparent 0.54rem),
+    radial-gradient(circle at 70% 20%, rgba(173, 215, 255, 0.54) 0 0.12rem, transparent 0.42rem),
+    radial-gradient(circle at 84% 64%, rgba(255, 217, 138, 0.58) 0 0.18rem, transparent 0.58rem),
+    radial-gradient(circle at 58% 78%, rgba(201, 230, 255, 0.44) 0 0.14rem, transparent 0.46rem),
+    radial-gradient(circle at 24% 70%, rgba(255, 222, 161, 0.58) 0 0.2rem, transparent 0.6rem);
+  background-size:
+    15rem 12rem,
+    19rem 14rem,
+    17rem 16rem,
+    21rem 18rem,
+    14rem 13rem,
+    18rem 15rem,
+    22rem 19rem;
+  mix-blend-mode: screen;
+  opacity: 0.34;
+  filter: blur(0.35px);
+  transform: translate3d(0, 0, 0);
+  animation: hero-particles 18s linear infinite;
+}
+
 .brand-hero::after {
   content: "";
   position: absolute;
   inset: 0;
+  z-index: 2;
   pointer-events: none;
   background:
-    linear-gradient(180deg, rgba(0, 0, 0, 0.48), transparent 18%, transparent 74%, rgba(0, 0, 0, 0.78)),
-    radial-gradient(circle at 12% 20%, rgba(255, 185, 64, 0.18), transparent 22rem);
+    linear-gradient(180deg, rgba(0, 0, 0, 0.38), transparent 18%, transparent 72%, rgba(0, 0, 0, 0.78)),
+    radial-gradient(ellipse at 71% 6%, rgba(255, 196, 89, 0.22), transparent 24rem),
+    linear-gradient(102deg, transparent 49%, rgba(255, 211, 130, 0.12) 50%, transparent 58%),
+    linear-gradient(78deg, transparent 54%, rgba(101, 146, 255, 0.11) 55%, transparent 64%);
+  background-position: center, center, 0 0, 0 0;
+  animation: hero-rays 12s ease-in-out infinite alternate;
 }
 
 .brand-hero-picture,
@@ -414,6 +448,8 @@ footer {
 }
 
 .brand-hero-picture {
+  position: relative;
+  z-index: 1;
   display: block;
 }
 
@@ -421,6 +457,8 @@ footer {
   object-fit: cover;
   object-position: center;
   outline: 0;
+  transform: scale(1.01);
+  animation: brand-hero-breathe 13s ease-in-out infinite alternate;
 }
 
 .brand-hero-actions {
@@ -1164,10 +1202,22 @@ footer {
     padding-top: 3.75rem;
   }
 
+  .brand-hero::before {
+    opacity: 0.2;
+    filter: blur(0.55px);
+  }
+
+  .brand-hero::after {
+    background:
+      linear-gradient(180deg, rgba(0, 0, 0, 0.26), transparent 20%, transparent 68%, rgba(0, 0, 0, 0.82)),
+      radial-gradient(ellipse at 75% 8%, rgba(255, 196, 89, 0.18), transparent 19rem),
+      linear-gradient(102deg, transparent 44%, rgba(255, 211, 130, 0.1) 50%, transparent 62%);
+  }
+
   .brand-hero-image {
     min-height: min(74svh, 42rem);
     object-fit: cover;
-    object-position: center;
+    object-position: 58% center;
   }
 
   .brand-hero-actions {
@@ -1489,6 +1539,54 @@ main {
 
   to {
     transform: scale(1.035);
+  }
+}
+
+@keyframes brand-hero-breathe {
+  from {
+    transform: scale(1.01);
+  }
+
+  to {
+    transform: scale(1.045);
+  }
+}
+
+@keyframes hero-particles {
+  from {
+    background-position:
+      0 0,
+      4rem 2rem,
+      1rem 5rem,
+      8rem 3rem,
+      2rem 9rem,
+      6rem 7rem,
+      0 10rem;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  to {
+    background-position:
+      4rem -10rem,
+      1rem -8rem,
+      5rem -7rem,
+      3rem -11rem,
+      7rem -5rem,
+      2rem -9rem,
+      6rem -6rem;
+    transform: translate3d(1.4rem, -1rem, 0) scale(1.04);
+  }
+}
+
+@keyframes hero-rays {
+  from {
+    opacity: 0.76;
+    background-position: center, center, -9rem 0, 6rem 0;
+  }
+
+  to {
+    opacity: 1;
+    background-position: center, center, 8rem 0, -7rem 0;
   }
 }
 

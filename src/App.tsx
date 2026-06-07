@@ -266,7 +266,7 @@ const platformLinks: PlatformLink[] = [
 ];
 
 const brandImages = {
-  hero: "/alwa/alwagordon-hero-wide.jpg",
+  hero: "/alwa/alwagordon-hero-canva.png",
   heroSquare: "/alwa/alwagordon-hero.jpg",
   logo: "/alwa/alwagordon-logo.jpg",
   portrait: "/alwa/alwagordon-portrait-rail.jpg",
