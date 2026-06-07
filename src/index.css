@@ -435,10 +435,10 @@ footer {
     18rem 15rem,
     22rem 19rem;
   mix-blend-mode: screen;
-  opacity: 0.34;
+  opacity: 0.24;
   filter: blur(0.35px);
   transform: translate3d(0, 0, 0);
-  animation: hero-particles 18s linear infinite;
+  animation: hero-particles 8s linear infinite;
 }
 
 .brand-hero::after {
@@ -453,7 +453,7 @@ footer {
     linear-gradient(102deg, transparent 49%, rgba(255, 211, 130, 0.12) 50%, transparent 58%),
     linear-gradient(78deg, transparent 54%, rgba(101, 146, 255, 0.11) 55%, transparent 64%);
   background-position: center, center, 0 0, 0 0;
-  animation: hero-rays 12s ease-in-out infinite alternate;
+  animation: hero-rays 5.5s ease-in-out infinite alternate;
 }
 
 .brand-hero-picture,
@@ -472,8 +472,8 @@ footer {
   object-fit: cover;
   object-position: center;
   outline: 0;
-  transform: scale(1.01);
-  animation: brand-hero-breathe 13s ease-in-out infinite alternate;
+  transform: scale(1);
+  animation: brand-hero-breathe 7s ease-in-out infinite alternate;
 }
 
 .brand-hero-actions {
@@ -801,10 +801,14 @@ footer {
   background: rgba(255, 255, 255, 0.14);
 }
 
+.release-marquee-lead {
+  min-height: clamp(26rem, 58svh, 44rem);
+}
+
 .release-cover {
   position: relative;
   display: block;
-  aspect-ratio: 1 / 1;
+  min-height: 100%;
   overflow: hidden;
   background: #0b0b0b;
   color: #fff;
@@ -1297,6 +1301,15 @@ footer {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .release-marquee-lead {
+    min-height: 0;
+  }
+
+  .release-cover {
+    aspect-ratio: 1 / 1;
+    min-height: 0;
+  }
+
   .feature-band,
   .feature-band-video,
   .editorial-grid {
@@ -1587,11 +1600,11 @@ main {
 
 @keyframes brand-hero-breathe {
   from {
-    transform: scale(1.01);
+    transform: scale(1);
   }
 
   to {
-    transform: scale(1.045);
+    transform: scale(1.012);
   }
 }
 
@@ -1617,7 +1630,7 @@ main {
       7rem -5rem,
       2rem -9rem,
       6rem -6rem;
-    transform: translate3d(1.4rem, -1rem, 0) scale(1.04);
+    transform: translate3d(0.8rem, -0.7rem, 0) scale(1.01);
   }
 }
 

@@ -270,7 +270,7 @@ const platformLinks: PlatformLink[] = [
 ];
 
 const brandImages = {
-  hero: "/alwa/alwagordon-hero-canva.png",
+  hero: "/alwa/alwagordon-hero-canva-2x.jpg",
   heroSquare: "/alwa/alwagordon-hero.jpg",
   logo: "/alwa/alwagordon-logo.jpg",
   portrait: "/alwa/alwagordon-portrait-rail.jpg",
@@ -393,29 +393,28 @@ function useScrollExperience(rootRef: React.RefObject<HTMLDivElement | null>, ac
           scrollTrigger: {
             trigger: ".brand-hero",
             start: "top top",
-            end: "+=92%",
-            scrub: 0.8,
-            pin: true,
+            end: "bottom top",
+            scrub: 0.22,
             anticipatePin: 1
           }
         });
 
         heroTimeline
-          .to(".brand-hero-image", { scale: 1.12, filter: "saturate(1.22) contrast(1.08)", ease: "none" }, 0)
-          .to(".brand-hero-actions", { y: -52, opacity: 0, ease: "none" }, 0)
-          .fromTo(".artist-atmosphere", { opacity: 0 }, { opacity: 1, ease: "none" }, 0.28);
+          .to(".brand-hero-image", { scale: 1.025, filter: "saturate(1.12) contrast(1.04)", ease: "none" }, 0)
+          .to(".brand-hero-actions", { y: -22, opacity: 0, ease: "none" }, 0)
+          .fromTo(".artist-atmosphere", { opacity: 0 }, { opacity: 0.75, ease: "none" }, 0.12);
       });
 
       mm.add("(max-width: 760px)", () => {
         gsap.to(".brand-hero-image", {
-          scale: 1.09,
-          yPercent: -4,
+          scale: 1.025,
+          yPercent: -2,
           ease: "none",
           scrollTrigger: {
             trigger: ".brand-hero",
             start: "top top",
             end: "bottom top",
-            scrub: 0.7
+            scrub: 0.2
           }
         });
       });
@@ -434,16 +433,16 @@ function useScrollExperience(rootRef: React.RefObject<HTMLDivElement | null>, ac
             ease: "power3.out",
             scrollTrigger: {
               trigger: section,
-              start: "top 74%",
-              end: "center 48%",
-              scrub: 0.8
+              start: "top 82%",
+              end: "top 42%",
+              scrub: 0.22
             }
           }
         );
 
         gsap.fromTo(
           media,
-          { autoAlpha: 0.52, scale: 1.16, xPercent: index % 2 === 0 ? 8 : -8 },
+          { autoAlpha: 0.72, scale: 1.04, xPercent: index % 2 === 0 ? 3 : -3 },
           {
             autoAlpha: 1,
             scale: 1,
@@ -453,16 +452,82 @@ function useScrollExperience(rootRef: React.RefObject<HTMLDivElement | null>, ac
               trigger: section,
               start: "top bottom",
               end: "bottom top",
-              scrub: 1
+              scrub: 0.24
             }
           }
         );
       });
 
-      gsap.utils.toArray<HTMLElement>(".release-marquee, .editorial-grid, .page-shell, .timeline-list, .track-grid, [data-slot='card'], .platform-link").forEach(element => {
+      gsap.fromTo(
+        ".release-marquee-lead",
+        { clipPath: "inset(0 50% 0 50%)", autoAlpha: 0.55 },
+        {
+          clipPath: "inset(0 0% 0 0%)",
+          autoAlpha: 1,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: ".release-marquee-lead",
+            start: "top 94%",
+            end: "top 38%",
+            scrub: 0.12
+          }
+        }
+      );
+
+      gsap.utils.toArray<HTMLElement>(".release-marquee-lead .release-cover").forEach((card, index) => {
+        gsap.fromTo(
+          card,
+          {
+            autoAlpha: 0,
+            xPercent: index < 2 ? -22 : 22,
+            yPercent: index % 2 === 0 ? 10 : -10,
+            rotate: index < 2 ? -3 : 3,
+            scale: 0.94
+          },
+          {
+            autoAlpha: 1,
+            xPercent: 0,
+            yPercent: 0,
+            rotate: 0,
+            scale: 1,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: ".release-marquee-lead",
+              start: "top 92%",
+              end: "center 44%",
+              scrub: 0.16
+            }
+          }
+        );
+      });
+
+      gsap.utils.toArray<HTMLElement>(".editorial-card").forEach((card, index) => {
+        gsap.fromTo(
+          card,
+          {
+            autoAlpha: 0,
+            xPercent: index === 0 ? -18 : 18,
+            scale: 0.96
+          },
+          {
+            autoAlpha: 1,
+            xPercent: 0,
+            scale: 1,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: ".editorial-grid",
+              start: "top 88%",
+              end: "center 42%",
+              scrub: 0.18
+            }
+          }
+        );
+      });
+
+      gsap.utils.toArray<HTMLElement>(".page-shell, .timeline-list, .track-grid, [data-slot='card'], .platform-link").forEach(element => {
         gsap.fromTo(
           element,
-          { autoAlpha: 0, y: 54, scale: 0.985 },
+          { autoAlpha: 0, y: 28, scale: 0.995 },
           {
             autoAlpha: 1,
             y: 0,
@@ -471,26 +536,9 @@ function useScrollExperience(rootRef: React.RefObject<HTMLDivElement | null>, ac
             ease: "power3.out",
             scrollTrigger: {
               trigger: element,
-              start: "top 86%",
-              end: "top 58%",
-              scrub: 0.7
-            }
-          }
-        );
-      });
-
-      gsap.utils.toArray<HTMLElement>(".release-cover, .editorial-card").forEach((card, index) => {
-        gsap.fromTo(
-          card,
-          { yPercent: index % 2 === 0 ? 10 : -8 },
-          {
-            yPercent: 0,
-            ease: "none",
-            scrollTrigger: {
-              trigger: card,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: 0.8
+              start: "top 90%",
+              end: "top 66%",
+              scrub: 0.18
             }
           }
         );
@@ -651,6 +699,15 @@ function FeaturedGrid({ onNavigate }: { onNavigate: (page: PageId) => void }) {
         <img className="atmosphere-shot atmosphere-shot-c" src={assetPath(brandImages.sideProfile)} alt="" />
       </div>
 
+      <div className="release-marquee release-marquee-lead">
+        {releases.map(release => (
+          <a key={release.title} className="release-cover" href={release.url} target="_blank" rel="noreferrer">
+            <img src={assetPath(release.image)} alt={`${release.title} cover art`} />
+            <span>{release.title}</span>
+          </a>
+        ))}
+      </div>
+
       <div className="feature-band feature-band-album">
         <div className="feature-copy">
           <p>New release</p>
@@ -670,15 +727,6 @@ function FeaturedGrid({ onNavigate }: { onNavigate: (page: PageId) => void }) {
           </div>
         </div>
         <img src={assetPath("/alwa/text-me-if-you-can.jpg")} alt="TEXT ME IF YOU CAN cover art" />
-      </div>
-
-      <div className="release-marquee">
-        {releases.map(release => (
-          <a key={release.title} className="release-cover" href={release.url} target="_blank" rel="noreferrer">
-            <img src={assetPath(release.image)} alt={`${release.title} cover art`} />
-            <span>{release.title}</span>
-          </a>
-        ))}
       </div>
 
       <div className="feature-band feature-band-video">
