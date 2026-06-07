@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from "react";
 import {
   ArrowUpRight,
   CalendarDays,
-  Disc3,
   FileText,
   Headphones,
   Instagram,
@@ -266,6 +265,15 @@ const platformLinks: PlatformLink[] = [
   }
 ];
 
+const brandImages = {
+  hero: "/alwa/alwagordon-hero-wide.jpg",
+  heroSquare: "/alwa/alwagordon-hero.jpg",
+  logo: "/alwa/alwagordon-logo.jpg",
+  portrait: "/alwa/alwagordon-portrait-rail.jpg",
+  overhead: "/alwa/alwagordon-overhead.jpg",
+  sideProfile: "/alwa/alwagordon-side-profile.jpg"
+};
+
 const stats = [
   { value: "2024", label: "NEXTies Musician of the Year" },
   { value: "88OE", label: "Label and community banner" },
@@ -374,7 +382,7 @@ function Header({ activePage, onNavigate }: { activePage: PageId; onNavigate: (p
           ))}
         </nav>
         <button className="artist-logo" onClick={() => onNavigate("home")} type="button" aria-label="Alwa Gordon home">
-          ALWA
+          <img src={assetPath(brandImages.logo)} alt="Alwa Gordon Music" />
         </button>
         <nav className="hidden items-center justify-end gap-5 lg:flex" aria-label="Secondary navigation">
           {rightNav.map(item => (
@@ -428,71 +436,58 @@ function Header({ activePage, onNavigate }: { activePage: PageId; onNavigate: (p
 function HomePage({ onNavigate }: { onNavigate: (page: PageId) => void }) {
   return (
     <>
-      <section className="mayhem-hero">
-        <div className="hero-motion-stack" aria-hidden="true">
-          <img className="hero-motion-image hero-motion-image-a" src={assetPath("/alwa/alwa-nexties-lookout.jpg")} alt="" />
-          <img className="hero-motion-image hero-motion-image-b" src={assetPath("/alwa/text-me-if-you-can.jpg")} alt="" />
-          <img className="hero-motion-image hero-motion-image-c" src={assetPath("/alwa/leave-video-thumb.jpg")} alt="" />
-          <div className="hero-red-wash" />
-          <div className="hero-vhs-lines" />
-          <div className="hero-dust" />
+      <section className="brand-hero">
+        <picture className="brand-hero-picture">
+          <source media="(min-width: 761px)" srcSet={assetPath(brandImages.hero)} />
+          <img className="brand-hero-image" src={assetPath(brandImages.heroSquare)} alt="Alwa Gordon Music hero graphic" />
+        </picture>
+        <div className="brand-hero-actions">
+          <Button asChild size="lg">
+            <a href="https://alwagordon.bandcamp.com/music" target="_blank" rel="noreferrer">
+              <Headphones data-icon="inline-start" />
+              Listen
+            </a>
+          </Button>
+          <Button variant="outline" size="lg" onClick={() => onNavigate("videos")}>
+            <Play data-icon="inline-start" />
+            Watch
+          </Button>
         </div>
-        <div className="hero-centerpiece">
-          <p>A year of</p>
-          <h1>
-            <span>88</span>
-          </h1>
-          <strong>Alwa Gordon</strong>
-          <div className="hero-action-row">
-            <Button asChild>
-              <a href="https://alwagordon.bandcamp.com/album/text-me-if-you-can" target="_blank" rel="noreferrer">
-                <Disc3 data-icon="inline-start" />
-                TEXT ME IF YOU CAN
-              </a>
-            </Button>
-            <Button variant="outline" onClick={() => onNavigate("videos")}>
-              <Play data-icon="inline-start" />
-              Watch LEAVE
-            </Button>
-          </div>
-        </div>
-        <HeroThumbRail onNavigate={onNavigate} />
       </section>
       <FeaturedGrid onNavigate={onNavigate} />
     </>
   );
 }
 
-function HeroThumbRail({ onNavigate }: { onNavigate: (page: PageId) => void }) {
-  const moments = [
-    { label: "Latest", image: "/alwa/text-me-if-you-can.jpg", page: "music" as PageId },
-    { label: "LEAVE", image: "/alwa/leave-video-thumb.jpg", page: "videos" as PageId },
-    { label: "Live", image: "/alwa/moes-saritah-alwa-event.jpg", page: "shows" as PageId },
-    { label: "NEXTies", image: "/alwa/alwa-nexties-lookout.jpg", page: "press" as PageId },
-    { label: "10 Seconds", image: "/alwa/10-seconds-left.jpg", page: "music" as PageId },
-    { label: "Good Times", image: "/alwa/alwa-goodtimes-2019.jpg", page: "bio" as PageId },
-    { label: "88OE", image: "/alwa/details.jpg", page: "label" as PageId }
-  ];
-
-  return (
-    <div className="hero-thumb-rail" aria-label="Featured sections">
-      {moments.map(moment => (
-        <button key={moment.label} className="hero-thumb" onClick={() => onNavigate(moment.page)} type="button">
-          <img src={assetPath(moment.image)} alt={`${moment.label} feature`} />
-          <span>{moment.label}</span>
-        </button>
-      ))}
-    </div>
-  );
-}
-
 function FeaturedGrid({ onNavigate }: { onNavigate: (page: PageId) => void }) {
   return (
     <section className="artist-home">
-      <div className="year-section">
-        <p>A year of</p>
-        <h2>Alwa Gordon</h2>
+      <div className="brand-mark-section">
+        <img src={assetPath(brandImages.logo)} alt="Alwa Gordon Music logo" />
+        <div>
+          <p>Alwa Gordon Music</p>
+          <h2>Records, visuals, shows, and 88 Over Everything.</h2>
+        </div>
       </div>
+
+      <div className="artist-photo-grid">
+        <button className="artist-photo-card tall" onClick={() => onNavigate("bio")} type="button">
+          <img src={assetPath(brandImages.portrait)} alt="Alwa Gordon seated portrait" />
+          <span>Artist</span>
+          <strong>Santa Cruz voice. Independent catalog. 88 on the back.</strong>
+        </button>
+        <button className="artist-photo-card" onClick={() => onNavigate("music")} type="button">
+          <img src={assetPath(brandImages.overhead)} alt="Alwa Gordon overhead portrait" />
+          <span>Music</span>
+          <strong>TEXT ME IF YOU CAN and the projects around it.</strong>
+        </button>
+        <button className="artist-photo-card" onClick={() => onNavigate("press")} type="button">
+          <img src={assetPath(brandImages.sideProfile)} alt="Alwa Gordon side profile portrait" />
+          <span>Press</span>
+          <strong>The city, the coverage, the movement.</strong>
+        </button>
+      </div>
+
       <div className="feature-band feature-band-album">
         <div className="feature-copy">
           <p>New release</p>
@@ -561,7 +556,7 @@ function BioPage() {
     <PageShell eyebrow="Artist Biography" title="Santa Cruz raised the sound. Alwa carries it forward.">
       <div className="grid gap-8 lg:grid-cols-[0.85fr_1.15fr]">
         <div className="flex flex-col gap-5">
-          <img className="rounded-md border border-white/10 object-cover" src={assetPath("/alwa/alwa-goodtimes-2019.jpg")} alt="Alwa Gordon in Good Times Love Your Local Band photo" />
+          <img className="rounded-md border border-white/10 object-cover" src={assetPath(brandImages.portrait)} alt="Alwa Gordon seated portrait" />
           <SourceCard />
         </div>
         <div className="flex flex-col gap-6 text-lg leading-8 text-stone-300">
